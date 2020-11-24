@@ -17,7 +17,7 @@ def getSubMatrix(match, mismatch, seq1, seq2):
 
 
 
-def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=1):
+def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
 
     subMatrix = getSubMatrix(match, mismatch, seq1, seq2)
 
@@ -36,4 +36,7 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=1):
             elif j == 0:
                 scoringMatrix[i][j] = scoringMatrix[i - 1][j] - gapPenalty
             else:
-                pass
+                scoringMatrix[i][j] = max(scoringMatrix[i - 1][j - 1] + subMatrix[i - 1][j - 1], scoringMatrix[i - 1][j] + gapPenalty, scoringMatrix[i][j - 1] + gapPenalty)
+            j += 1
+        i += 1
+        
