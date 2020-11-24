@@ -30,13 +30,21 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
         j = 0
         while j < W:
             if i == 0 and j == 0:
+                j += 1
                 continue
             if i == 0:
-                scoringMatrix[i][j] = scoringMatrix[i][j - 1] - gapPenalty
+                scoringMatrix[i][j] = scoringMatrix[i][j - 1] + gapPenalty
             elif j == 0:
-                scoringMatrix[i][j] = scoringMatrix[i - 1][j] - gapPenalty
+                scoringMatrix[i][j] = scoringMatrix[i - 1][j] + gapPenalty
             else:
                 scoringMatrix[i][j] = max(scoringMatrix[i - 1][j - 1] + subMatrix[i - 1][j - 1], scoringMatrix[i - 1][j] + gapPenalty, scoringMatrix[i][j - 1] + gapPenalty)
             j += 1
         i += 1
-        
+
+    return scoringMatrix
+
+def main():
+    scoringMatrix = alignUsingNW("GATTACA", "GCATGCU")
+    print(scoringMatrix)
+
+main()
