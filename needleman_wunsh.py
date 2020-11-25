@@ -15,7 +15,27 @@ def getSubMatrix(match, mismatch, seq1, seq2):
 
     return matrix
 
-
+def getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2):
+    str1 = str2 = ""
+    i, j = startPoint[0], startPoint[1]
+    while i != 0 and j != 0:
+        if pointerMatrix[i][j][2] == 0:
+            str1 += seq1[i - 1]
+            str2 += seq2[j - 1]
+            print(scoringMatrix[i][j])
+        elif pointerMatrix[i][j][2] == 1:
+            str1 += seq1[i - 1]
+            str2 += "-"
+            print(scoringMatrix[i][j])
+        elif pointerMatrix[i][j][2] == 2:
+            str1 += "-"
+            str2 += seq2[j - 1]
+            print(scoringMatrix[i][j])
+        print(pointerMatrix[i][j])
+        hold = i
+        i = pointerMatrix[i][j][0]
+        j = pointerMatrix[hold][j][1]
+    return (str1, str2)
 
 def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
 
@@ -38,9 +58,21 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
                 scoringMatrix[i][j] = scoringMatrix[i - 1][j] + gapPenalty
             else:
                 scoringMatrix[i][j] = max(scoringMatrix[i - 1][j - 1] + subMatrix[i - 1][j - 1], scoringMatrix[i - 1][j] + gapPenalty, scoringMatrix[i][j - 1] + gapPenalty)
+
+            if scoringMatrix[i][j] == scoringMatrix[i - 1][j - 1] + subMatrix[i - 1][j - 1]:
+                pointerMatrix[i][j] = (i - 1, j - 1, 0, scoringMatrix[i][j])
+            elif scoringMatrix[i][j] == scoringMatrix[i - 1][j] + gapPenalty:
+                pointerMatrix[i][j] = (i - 1, j, 1, scoringMatrix[i][j])
+            elif scoringMatrix[i][j] == scoringMatrix[i][j - 1] + gapPenalty:
+                pointerMatrix[i][j] = (i, j - 1, 2, scoringMatrix[i][j])
+
+            
             j += 1
         i += 1
 
+
+    alignment = getAlignment(scoringMatrix, pointerMatrix, (H - 1, W - 1), seq1, seq2)
+    print(alignment)
     return scoringMatrix
 
 def main():
