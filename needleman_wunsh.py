@@ -35,7 +35,7 @@ def getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2):
         hold = i
         i = pointerMatrix[i][j][0]
         j = pointerMatrix[hold][j][1]
-    return (str1, str2)
+    return (str1[::-1], str2[::-1])
 
 def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
 
