@@ -83,17 +83,16 @@ def alignUsingSW(seq1, seq2, match=1, mismatch=-1, gapPenalty=1):
         i += 1
 
     alignment = getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2)
-    print(alignment)
-    print(scoringMatrix[4][4])
-    print(pointerMatrix[4][4])
-    return (scoringMatrix, pointerMatrix, maxScore)
+    return (scoringMatrix, pointerMatrix, maxScore, alignment)
 
 def main():
-    (scoringMat, pointerMat, maxScore) = alignUsingSW("GGTTGACTA", "TGTTACGG", 3, -3, 2)
+    (scoringMat, pointerMat, maxScore, alignment) = alignUsingSW("GGTTGACTA", "TGTTACGG", 3, -3, 2)
 
     print(scoringMat)
     print("------")
     print(pointerMat)
+    print("------")
+    print(alignment)
 
 
 main()

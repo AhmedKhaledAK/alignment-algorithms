@@ -72,11 +72,15 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
 
 
     alignment = getAlignment(scoringMatrix, pointerMatrix, (H - 1, W - 1), seq1, seq2)
-    print(alignment)
-    return scoringMatrix
+    return (scoringMatrix, pointerMatrix, alignment)
 
 def main():
-    scoringMatrix = alignUsingNW("GATTACA", "GCATGCU")
+    (scoringMatrix, pointerMatrix, alignment) = alignUsingNW("GATTACA", "GCATGCU")
+    
     print(scoringMatrix)
+    print("-------")
+    print(pointerMatrix)
+    print("-------")
+    print(alignment)
 
 main()
