@@ -22,16 +22,12 @@ def getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2):
         if pointerMatrix[i][j][2] == 0:
             str1 += seq1[i - 1]
             str2 += seq2[j - 1]
-            print(scoringMatrix[i][j])
         elif pointerMatrix[i][j][2] == 1:
             str1 += seq1[i - 1]
             str2 += "-"
-            print(scoringMatrix[i][j])
         elif pointerMatrix[i][j][2] == 2:
             str1 += "-"
             str2 += seq2[j - 1]
-            print(scoringMatrix[i][j])
-        print(pointerMatrix[i][j])
         hold = i
         i = pointerMatrix[i][j][0]
         j = pointerMatrix[hold][j][1]
