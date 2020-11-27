@@ -20,10 +20,6 @@ def getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2):
     str1 = str2 = ""
     i, j = startPoint[0], startPoint[1]
     while scoringMatrix[i][j] != 0:
-        # print(seq1[i -1])
-        # print(seq2[j - 1])
-        # print(pointerMatrix[i][j][2])
-        # print("---")
         if pointerMatrix[i][j][2] == 0:
             str1 += seq1[i - 1]
             str2 += seq2[j - 1]
@@ -40,12 +36,7 @@ def getAlignment(scoringMatrix, pointerMatrix, startPoint, seq1, seq2):
         hold = i
         i = pointerMatrix[i][j][0]
         j = pointerMatrix[hold][j][1]
-        
-        print("i: " + str(i) + " j: " + str(j))
-        print("score: " + str(scoringMatrix[i][j]))
-
-    print("4: " + str(scoringMatrix[4][4]))
-    return (str1, str2)
+    return (str1[::-1], str2[::-1])
 
 
 
