@@ -1,4 +1,5 @@
 Q = "AGTCAT"
+R = "AAGTATCGA"
 
 symbols = ['A', 'C', 'G', 'T']
 
@@ -50,5 +51,14 @@ def main():
     synons = findSynonyms(kmers)
     synons = calKey(synons, 3)
     print(synons)
+
+    ### DB sequence
+    print("-----")
+    kmersDB = getKMers(R, 3)
+    for i in range(len(kmersDB)):
+        kmersDB[i] = (kmersDB[i], i)
+        
+    print(kmersDB)
+    
 
 main()
