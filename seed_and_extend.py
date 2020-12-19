@@ -58,7 +58,8 @@ def main():
     for i in range(len(kmersDB)):
         kmersDB[i] = (kmersDB[i], i)
         
+    kmersDB = calKey(kmersDB, 3)
     print(kmersDB)
-    
+
 
 main()
