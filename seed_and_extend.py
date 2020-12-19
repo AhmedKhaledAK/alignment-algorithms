@@ -62,4 +62,10 @@ def main():
     print(kmersDB)
 
 
+    print("----")
+    for kmer in kmersDB:
+        print(kmer)
+        output = [item for item in synons if item[2] == kmer[2]]
+        print(output)
+
 main()
