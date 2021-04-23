@@ -37,6 +37,9 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
 
     subMatrix = getSubMatrix(match, mismatch, seq1, seq2)
 
+    print(subMatrix)
+
+
     H, W = len(seq1) + 1, len(seq2) + 1
     scoringMatrix = [[0 for i in range(W)] for y in range(H)]
     pointerMatrix = [[(-1,-1,-1, -1) for i in range(W)] for y in range(H)]
@@ -62,7 +65,6 @@ def alignUsingNW(seq1, seq2, match=1, mismatch=-1, gapPenalty=-1):
             elif scoringMatrix[i][j] == scoringMatrix[i][j - 1] + gapPenalty:
                 pointerMatrix[i][j] = (i, j - 1, 2, scoringMatrix[i][j])
 
-            
             j += 1
         i += 1
 
