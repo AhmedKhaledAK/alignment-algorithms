@@ -162,6 +162,27 @@ def calculate_keys(words, k):
   return words_keys
 
 
+def calculate_hsp_score(query_seq, db_seq, qidx, dbidx):
+  if query_seq[qidx] == 'A' and db_seq[dbidx] == 'A':
+    return 1
+  elif (query_seq[qidx] == 'A' and db_seq[dbidx] == 'T') or (query_seq[qidx] == 'T' and db_seq[dbidx] == 'A'):
+    return -1
+  elif (query_seq[qidx] == 'A' and db_seq[dbidx] == 'G') or (query_seq[qidx] == 'G' and db_seq[dbidx] == 'A'):
+    return -0.5
+  elif (query_seq[qidx] == 'A' and db_seq[dbidx] == 'C') or (query_seq[qidx] == 'C' and db_seq[dbidx] == 'A'):
+    return -1
+  elif (query_seq[qidx] == 'T' and db_seq[dbidx] == 'T'):
+    return 1
+  elif (query_seq[qidx] == 'T' and db_seq[dbidx] == 'G') or (query_seq[qidx] == 'G' and db_seq[dbidx] == 'T'):
+    return -1
+  elif (query_seq[qidx] == 'T' and db_seq[dbidx] == 'C') or (query_seq[qidx] == 'C' and db_seq[dbidx] == 'T'):
+    return -0.5
+  elif (query_seq[qidx] == 'G' and db_seq[dbidx] == 'G'):
+    return 1
+  elif (query_seq[qidx] == 'G' and db_seq[dbidx] == 'C') or (query_seq[qidx] == 'C' and db_seq[dbidx] == 'G'):
+    return -1
+  elif (query_seq[qidx] == 'C' and db_seq[dbidx] == 'C'):
+    return 1
 
 
 
@@ -181,10 +202,8 @@ def ungapped_extension(query_seq, db_seq, start_q, start_db, k):
 
   # calculate score for length of seed
   for i in range(k):
-    if query_seq[start_q+i] == db_seq[start_db+i]:
-      score = score + 1
-    else:
-      score = score - 1
+    score = score + calculate_hsp_score(query_seq, db_seq, start_q+i, start_db+i)
+
   print("seed score: ", score)
 
 
@@ -194,10 +213,7 @@ def ungapped_extension(query_seq, db_seq, start_q, start_db, k):
   
   while(query_idx < len(query_seq) and db_idx < len(db_seq)):
     # if match or mismatch
-    if query_seq[query_idx] == db_seq[db_idx]:
-      score = score + 1
-    else:
-      score = score - 1
+    score = score + calculate_hsp_score(query_seq, db_seq, query_idx, db_idx)
     
     if score < threshold:
       break
@@ -216,11 +232,7 @@ def ungapped_extension(query_seq, db_seq, start_q, start_db, k):
   db_idx = start_db - 1
   
   while query_idx >= 0 and db_idx >= 0:
-
-    if query_seq[query_idx] == db_seq[db_idx]:
-      score = score + 1
-    else:
-      score = score - 1
+    score = score + calculate_hsp_score(query_seq, db_seq, query_idx, db_idx)
     
     if score < threshold:
       # print("under threshold!")
@@ -240,7 +252,7 @@ def ungapped_extension(query_seq, db_seq, start_q, start_db, k):
 
   print("Query sequence: ", query_seq[startidx_q:endidx_q+1],startidx_q, endidx_q)
   print("DB sequence: ", db_seq[startidx_db:endidx_db+1], startidx_db, endidx_db)
-  return query_seq[startidx_q : endidx_q + 1], db_seq[startidx_db : endidx_db + 1]
+  return query_seq[startidx_q : endidx_q + 1], db_seq[startidx_db : endidx_db + 1], score
 
 
 
@@ -290,7 +302,7 @@ for kmer in kmers_db_keys:
   print(output)
 
   for op in output:
-    str1, str2 = ungapped_extension(query_seq, db_seq, op[1], kmer[1], 3)
+    str1, str2, score = ungapped_extension(query_seq, db_seq, op[1], kmer[1], 3)
     (scoringMat, pointerMat, maxScore, alignment) = alignUsingSW(str1, str2, 1, -1, 1)
     print("RESULT: ", alignment)
     results.append(alignment)
